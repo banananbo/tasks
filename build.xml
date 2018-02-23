@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="laravel-TDD-test" basedir="." default="build">
+
+    <!-- dir変数設定 -->
+    <property name="base_dir" value="." />
+    <property name="app_dir"  value="${base_dir}/app" />
+    <property name="report_dir" value="${base_dir}/report/" override="false"/>
+
+
+    <!-- buildターゲットは、dependsで他のターゲットに依存しており、左のターゲットから順に実行する -->
+    <target name="build" depends="clean,prepare,phpunit,phpcs,phpcpd,phpmd" />
+
+
+    <!-- cleaning処理 -->
+    <target name="clean" description="clean">
+        <delete dir="${report_dir}" includeemptydirs="true" />
+    </target>
+
+
+    <!-- 前処理 -->
+    <target name="prepare" description="prepare">
+        <mkdir dir="${report_dir}" />
+    </target>
+
+
+    <!-- phpmd -->
+    <target name="phpmd" description="Generate phpmd.xml by phpmd" >
+        <phpmd rulesets="phpmd.xml">
+            <fileset dir="${base_dir}">
+                <include name="app/**/*.php" />
+                <include name="service/**/*.php" />
+            </fileset>
+            <formatter type="xml" outfile="${report_dir}/phpmd.xml" />
+        </phpmd>
+    </target>
+
+
+    <!-- phpcpd -->
+    <target name="phpcpd" description="Generate phpcpd.xml by phpcpd" >
+        <phpcpd minTokens="5" minLines="5">
+            <fileset dir="${base_dir}">
+                <include name="app/**/*.php" />
+                <include name="service/**/*.php" />
+            </fileset>
+            <formatter type="pmd" outfile="${report_dir}/phpcpd.xml" />
+        </phpcpd>
+    </target>
+
+
+    <!-- phpcs -->
+    <target name="phpcs" description="Generate phpcs.xml by PHP_CodeSniffer" >
+        <phpcodesniffer standard="PSR2" allowedFileExtensions="php" encoding="UTF-8">
+            <fileset dir="${base_dir}">
+                <include name="app/**/*.php" />
+                <include name="service/**/*.php" />
+            </fileset>
+            <formatter type="checkstyle" outfile="${report_dir}/phpcs.xml"/>
+        </phpcodesniffer>
+    </target>
+
+
+    <!-- PHPUnit -->
+    <target name="phpunit">
+        <phpunit bootstrap="tests/bootstrap.php" haltonfailure="true" printsummary="true" configuration="phpunit.xml">
+            <formatter type="xml" outfile="${report_dir}/phpunit.xml" />
+            <batchtest>
+                <fileset dir="./tests">
+                    <include name="**/*Test.php" />
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+
+
+</project>

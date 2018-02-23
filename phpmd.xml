@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<ruleset name="Nutaku Rules"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>
+        The Nutaku Code ruleset contains rules that enforce a nutaku code base.
+    </description>
+    <rule ref="rulesets/naming.xml/ConstructorWithNameAsEnclosingClass"/>
+
+    <rule ref="rulesets/design.xml/DevelopmentCodeFragment" />
+    <rule ref="rulesets/design.xml/EvalExpression" />
+    <rule ref="rulesets/design.xml/GotoStatement" />
+
+    <rule ref="rulesets/codesize.xml/ExcessiveClassLength" />
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength" >
+        <properties>
+            <property name="minimum" value="54" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable">
+        <properties>
+            <property name="allow-unused-foreach-variables" value="true" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/unusedcode.xml/UnusedPrivateField" />
+</ruleset>
